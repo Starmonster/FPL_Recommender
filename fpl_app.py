@@ -198,13 +198,13 @@ elif tool == "Forecast":
         fix_set.loc[fix_set["name"] == team_select, "opponent_name"] = fix_set.name_a
         fix_set.loc[fix_set["name_a"] == team_select, "opponent_name"] = fix_set.name
 
+        # Add in whether index team is playing Home or Away
+        location = fix_set.name.apply(lambda x: "Home" if x == team_select else "Away")
+        fix_set.insert(2, "location", location)
 
         fix_set["team_review"] = team_select
 
-
-        fix_set_ = fix_set[["event", "team_review", "opponent", "opponent_name"]]
-
-
+        fix_set_ = fix_set[["event", "team_review", "location", "opponent", "opponent_name"]]
 
         # Now get the strengths of all possible opponents - drop out our selected review team
         opponent_strengths = live_strengths_.loc[live_strengths_.index != team_abbr][["strength",
